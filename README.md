@@ -54,3 +54,4 @@ Put this in your `pom.xml`. google them, pretty basic stuff
 * Creating the chatClient with that data as context
 * Getting the required answer
 * ![img.png](img.png)
+* ![img_1.png](img_1.png)
