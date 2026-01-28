@@ -11,14 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ChatModelController {
 
-    private final ChatModel chatModel;
+   // private final ChatModel chatModel;
 
-    public ChatModelController(ChatModel chatModel) {
-        this.chatModel = chatModel;
-    }
+   // public ChatModelController(ChatModel chatModel) {
+    //    this.chatModel = chatModel;
+    //}
 
     @GetMapping("/model")
     public String model(@RequestParam(value = "message", defaultValue = "Hello") String message) {
-        return chatModel.chat(message);
+       //  return chatModel.chat(message);
+        return "";
     }
 }

@@ -1,6 +1,9 @@
 package dev.langchain4j.example.aiservice;
 
 import dev.langchain4j.service.spring.AiService;
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,10 +19,16 @@ public class AssistantController {
 
     private final Assistant assistant;
     private final StreamingAssistant streamingAssistant;
+   // private final ChatClient chatClient;
+    private final ChatClient customChatCLientUsingOurVector;
 
-    public AssistantController(Assistant assistant, StreamingAssistant streamingAssistant) {
+    public AssistantController(Assistant assistant, StreamingAssistant streamingAssistant, ChatClient.Builder builder, VectorStore vectorStore) {
         this.assistant = assistant;
         this.streamingAssistant = streamingAssistant;
+      //  this.chatClient = builder.build();
+        this.customChatCLientUsingOurVector = builder
+                .defaultAdvisors(new QuestionAnswerAdvisor(vectorStore))
+                .build();;
     }
 
     @GetMapping("/assistant")
@@ -34,11 +43,20 @@ public class AssistantController {
         return assistant.generateCode(message,userDtoSource,stringUtilSource);
     }
 
-
-
     @GetMapping(value = "/streamingAssistant", produces = TEXT_EVENT_STREAM_VALUE)
     public Flux<String> streamingAssistant(
             @RequestParam(value = "message", defaultValue = "What is the current time?") String message) {
         return streamingAssistant.chat(message);
     }
+
+    @GetMapping(value = "/vector")
+    public String vector(
+            @RequestParam(value = "message", defaultValue = "what do we know about hippa voilation ") String message) {
+        return customChatCLientUsingOurVector.prompt()
+                .user(message)
+                .call()
+                .content();
+    }
+
+
 }
