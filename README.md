@@ -47,3 +47,10 @@ Put this in your `pom.xml`. google them, pretty basic stuff
 * **`@V`**: To inject variables into prompt templates (e.g., `Hello {{name}}`)
 *  I ended up paying $5 for an OpenAI API key.
 * Switched from `OllamaChatModel` to `OpenAiChatModel` because the local LLM was behaving quite dumb to be honest !
+
+
+### Vector Database integration
+* Used a global url to feed data and store it in a vector database after embedding
+* Creating the chatClient with that data as context
+* Getting the required answer
+* ![img.png](img.png)
